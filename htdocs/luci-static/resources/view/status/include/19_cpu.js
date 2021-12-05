@@ -1,7 +1,8 @@
 'use strict';
+'require baseclass';
 'require fs';
 
-return L.Class.extend({
+return baseclass.extend({
 	title: _('CPU Load'),
 
 	load: function() {
@@ -27,12 +28,12 @@ return L.Class.extend({
 
 		cpuStatArray.sort((a, b) => a[0] - b[0]);
 
-		let cpuTable = E('div', { 'class': 'table' });
-
-		// For single-core CPU (hide total)
+		// For single-core CPU (hide 'total')
 		if(cpuStatArray.length === 2) {
 			cpuStatArray = cpuStatArray.slice(0, 1);
 		};
+
+		let cpuTable = E('div', { 'class': 'table' });
 
 		cpuStatArray.forEach((c, i) => {
 			let loadAvg = 0;
@@ -45,7 +46,8 @@ return L.Class.extend({
 			cpuTable.append(
 				E('div', { 'class': 'tr' }, [
 					E('div', { 'class': 'td left', 'width': '33%' },
-						(cpuStatArray[i][0] === Infinity) ? _('Total Load') : _('CPU') + ' ' + cpuStatArray[i][0]),
+						(cpuStatArray[i][0] === Infinity) ?
+							_('Total Load') : _('CPU') + ' ' + cpuStatArray[i][0]),
 
 					E('div', { 'class': 'td' },
 						E('div', {
