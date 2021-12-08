@@ -28,12 +28,12 @@ return baseclass.extend({
 
 		cpuStatArray.sort((a, b) => a[0] - b[0]);
 
+		let cpuTable = E('table', { 'class': 'table' });
+
 		// For single-core CPU (hide 'total')
 		if(cpuStatArray.length === 2) {
 			cpuStatArray = cpuStatArray.slice(0, 1);
 		};
-
-		let cpuTable = E('div', { 'class': 'table' });
 
 		cpuStatArray.forEach((c, i) => {
 			let loadAvg = 0;
@@ -44,12 +44,11 @@ return baseclass.extend({
 			};
 
 			cpuTable.append(
-				E('div', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' },
-						(cpuStatArray[i][0] === Infinity) ?
-							_('Total Load') : _('CPU') + ' ' + cpuStatArray[i][0]),
+				E('tr', { 'class': 'tr' }, [
+					E('td', { 'class': 'td left', 'width': '33%' },
+						(cpuStatArray[i][0] === Infinity) ? _('Total Load') : _('CPU') + ' ' + cpuStatArray[i][0]),
 
-					E('div', { 'class': 'td' },
+					E('td', { 'class': 'td' },
 						E('div', {
 								'class': 'cbi-progressbar',
 								'title': loadAvg + '%',
