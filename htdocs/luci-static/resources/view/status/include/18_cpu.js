@@ -13,9 +13,9 @@ return baseclass.extend({
 		if(!cpuData) return;
 
 		let cpuStatArray = [];
-		let statStringsArray = cpuData.trim().split('\n').filter(s => s.startsWith('cpu'));
+		let statItemsArray = cpuData.trim().split('\n').filter(s => s.startsWith('cpu'));
 
-		for(let str of statStringsArray) {
+		for(let str of statItemsArray) {
 			let arr = str.split(/\s+/).slice(0, 8);
 			arr[0] = (arr[0] === 'cpu') ? Infinity : arr[0].replace('cpu', '');
 			arr = arr.map(e => Number(e));
