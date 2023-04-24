@@ -3,16 +3,18 @@
 'require fs';
 
 return baseclass.extend({
-	title : _('CPU Load'),
+	title    : _('CPU Load'),
 
-	load  : function() {
+	statArray: null,
+
+	load     : function() {
 		return L.resolveDefault(fs.read('/proc/stat'), null);
 	},
 
 	render: function(cpuData) {
 		if(!cpuData) return;
 
-		let cpuStatArray     = [];
+		let cpuStatArray   = [];
 		let statItemsArray = cpuData.trim().split('\n').filter(s => s.startsWith('cpu'));
 
 		for(let str of statItemsArray) {
@@ -37,9 +39,9 @@ return baseclass.extend({
 
 		cpuStatArray.forEach((c, i) => {
 			let loadAvg = 0;
-			if('cpuStatusStatArray' in window) {
-				let idle = c[2] - window.cpuStatusStatArray[i][2];
-				let sum  = c[1] - window.cpuStatusStatArray[i][1];
+			if(this.statArray !== null) {
+				let idle = c[2] - this.statArray[i][2];
+				let sum  = c[1] - this.statArray[i][1];
 				loadAvg  = Math.round(100 * sum / (sum + idle));
 			};
 
@@ -51,7 +53,7 @@ return baseclass.extend({
 					E('td', { 'class': 'td' },
 						E('div', {
 								'class': 'cbi-progressbar',
-								'title': ('cpuStatusStatArray' in window) ? loadAvg + '%' : _('Calculating') + '...',
+								'title': (this.statArray !== null) ? loadAvg + '%' : _('Calculating') + '...',
 							},
 							E('div', { 'style': 'width:' + loadAvg + '%' })
 						)
@@ -60,8 +62,7 @@ return baseclass.extend({
 			);
 		});
 
-		window.cpuStatusStatArray = cpuStatArray;
-
+		this.statArray = cpuStatArray;
 		return cpuTable;
 	},
 });
