@@ -7,11 +7,11 @@ return baseclass.extend({
 
 	statArray: null,
 
-	load     : function() {
+	load() {
 		return L.resolveDefault(fs.read('/proc/stat'), null);
 	},
 
-	render: function(cpuData) {
+	render(cpuData) {
 		if(!cpuData) return;
 
 		let cpuStatArray   = [];
